@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}WasteWise{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="brand" href="{{ url_for('dashboard') }}">
+                <span class="brand-mark">♻</span>
+                <span>WasteWise</span>
+            </a>
+            <nav class="side-nav">
+                <a class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}"><span>⌂</span> Dashboard</a>
+                <a class="nav-link {% if request.endpoint == 'add_waste' %}active{% endif %}" href="{{ url_for('add_waste') }}"><span>＋</span> Add Waste</a>
+                <a class="nav-link {% if request.endpoint == 'analytics' %}active{% endif %}" href="{{ url_for('analytics') }}"><span>▥</span> Graphs & Analytics</a>
+                <a class="nav-link {% if request.endpoint == 'about' %}active{% endif %}" href="{{ url_for('about') }}"><span>ⓘ</span> About</a>
+            </nav>
+            <div class="sidebar-bottom">
+                <div class="leaf-art">◢</div>
+                <p>Less waste.<br><strong>Greener tomorrow.</strong></p>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">SMART WASTE MANAGEMENT</p>
+                    <h1>{% block heading %}Dashboard{% endblock %}</h1>
+                </div>
+                <div class="user-pill"><span class="avatar">W</span> WasteWise User <span>⌄</span></div>
+            </header>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

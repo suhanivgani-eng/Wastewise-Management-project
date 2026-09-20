@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}WasteWise | Analytics{% endblock %}
+{% block heading %}Graphs & Analytics{% endblock %}
+{% block content %}
+<section class="stats-grid"><div class="stat-card mint"><p>Total Waste</p><h3>{{ stats.total_waste }} kg</h3></div><div class="stat-card blue"><p>Recyclable</p><h3>{{ stats.recyclable }} kg</h3></div><div class="stat-card orange"><p>Organic</p><h3>{{ stats.organic }} kg</h3></div><div class="stat-card purple"><p>Records</p><h3>{{ stats.record_count }}</h3></div></section>
+<section class="panel large-chart"><div class="panel-heading"><div><h3>Category Comparison</h3><p>Compare the amount recorded in each category.</p></div></div><canvas id="barChart"></canvas></section>
+<script>
+const totals = {{ stats.category_totals|tojson }};
+new Chart(document.getElementById('barChart'), {type:'bar',data:{labels:Object.keys(totals),datasets:[{label:'Quantity',data:Object.values(totals),backgroundColor:'#16845a',borderRadius:8}]},options:{responsive:true,scales:{y:{beginAtZero:true}}}});
+</script>
+{% endblock %}

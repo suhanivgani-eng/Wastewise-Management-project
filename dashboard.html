@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}WasteWise | Dashboard{% endblock %}
+{% block heading %}Dashboard{% endblock %}
+{% block content %}
+<section class="hero-card">
+    <div>
+        <span class="hero-kicker">🌿 Welcome back</span>
+        <h2>Hello, WasteWise User!</h2>
+        <p>Track, manage and make a difference.<br>Every small step creates a cleaner, healthier planet.</p>
+        <a class="btn btn-light" href="{{ url_for('add_waste') }}">＋ Add Waste Record</a>
+    </div>
+    <div class="hero-illustration">🌍<span>♻</span></div>
+</section>
+
+<section class="stats-grid">
+    <div class="stat-card mint"><div class="stat-icon">▣</div><p>Total Waste</p><h3>{{ stats.total_waste }} kg</h3><small>Tracked quantity</small></div>
+    <div class="stat-card blue"><div class="stat-icon">♻</div><p>Recyclable Waste</p><h3>{{ stats.recyclable }} kg</h3><small>Ready for recovery</small></div>
+    <div class="stat-card orange"><div class="stat-icon">⌁</div><p>Organic Waste</p><h3>{{ stats.organic }} kg</h3><small>Compostable material</small></div>
+    <div class="stat-card purple"><div class="stat-icon">▤</div><p>Total Records</p><h3>{{ stats.record_count }}</h3><small>Logged waste items</small></div>
+</section>
+
+<section class="content-grid">
+    <div class="panel chart-panel">
+        <div class="panel-heading"><div><h3>Waste Distribution</h3><p>Category-wise waste breakdown</p></div><span class="panel-icon">▥</span></div>
+        <canvas id="wasteChart"></canvas>
+    </div>
+    <div class="panel">
+        <div class="panel-heading"><div><h3>Recent Waste Records</h3><p>Your latest activity</p></div><a href="{{ url_for('analytics') }}" class="text-link">View Analytics →</a></div>
+        <div class="table-wrap"><table><thead><tr><th>Item</th><th>Category</th><th>Qty</th><th>Date</th></tr></thead><tbody>
+        {% for record in records %}<tr><td>{{ record.item }}</td><td><span class="tag {{ record.category|lower|replace('-', '') }}">{{ record.category }}</span></td><td>{{ record.quantity }} {{ record.unit }}</td><td>{{ record.date }}</td></tr>{% endfor %}
+        </tbody></table></div>
+    </div>
+</section>
+
+<section class="insights panel">
+    <div class="panel-heading"><div><h3>Quick Insights</h3><p>Small actions create measurable impact</p></div><span class="panel-icon">✦</span></div>
+    <div class="insight-grid">
+        <div><strong>♻ Recycling</strong><span>Separate dry waste</span></div>
+        <div><strong>🍃 Organic</strong><span>Try composting</span></div>
+        <div><strong>⚠ Hazardous</strong><span>Handle with care</span></div>
+        <div><strong>🌱 Sustainability</strong><span>Reduce and reuse</span></div>
+    </div>
+</section>
+
+<script>
+const totals = {{ stats.category_totals|tojson }};
+new Chart(document.getElementById('wasteChart'), {
+    type: 'doughnut',
+    data: { labels: Object.keys(totals), datasets: [{ data: Object.values(totals), backgroundColor: ['#1c9b65','#2388e8','#f07a35','#8060d9','#718096'], borderWidth: 0 }] },
+    options: { responsive: true, cutout: '68%', plugins: { legend: { position: 'right', labels: { usePointStyle: true, padding: 18 } } } }
+});
+</script>
+{% endblock %}

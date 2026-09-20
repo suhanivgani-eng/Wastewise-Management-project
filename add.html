@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}WasteWise | Add Waste{% endblock %}
+{% block heading %}Add Waste Record{% endblock %}
+{% block content %}
+<div class="form-layout">
+    <section class="panel form-panel">
+        <div class="panel-heading"><div><h3>Record new waste</h3><p>Add clear details to keep your analytics accurate.</p></div><span class="panel-icon">＋</span></div>
+        <form method="POST">
+            <div class="form-grid">
+                <label>Item name<input name="item" placeholder="e.g. Plastic bottle" required></label>
+                <label>Category<select name="category" required><option value="">Choose category</option><option>Organic</option><option>Recyclable</option><option>Hazardous</option><option>E-waste</option><option>General</option></select></label>
+                <label>Quantity<input type="number" name="quantity" min="0.01" step="0.01" placeholder="e.g. 2.5" required></label>
+                <label>Unit<select name="unit"><option>kg</option><option>g</option><option>pieces</option><option>litres</option></select></label>
+            </div>
+            <label>Notes<textarea name="notes" placeholder="Additional information (optional)"></textarea></label>
+            <div class="form-actions"><a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Cancel</a><button class="btn btn-primary" type="submit">Save Record</button></div>
+        </form>
+    </section>
+    <aside class="tip-card"><span>🌱</span><h3>Smart recording tip</h3><p>Use the same unit consistently to make your charts and reports more meaningful.</p></aside>
+</div>
+{% endblock %}
